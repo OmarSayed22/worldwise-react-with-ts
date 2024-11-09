@@ -24,6 +24,6 @@ function useFetch<T>(initialValue: T, url: string) {
     }
     fetchData();
   }, [url]);
-  return { data, error, setData, isLoading };
+  return { data, error, setData, isLoading, setIsLoading };
 }
 export default useFetch;

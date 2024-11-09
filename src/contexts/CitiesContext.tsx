@@ -18,6 +18,7 @@ function CitiesProvider({ children }: { readonly children: React.ReactNode }) {
     data: cities,
     setData: setCities,
     isLoading,
+    setIsLoading,
   } = useFetch<City[]>([], `${BASE_URL}/cities`);
   const [currentCityId, setCurrentCityId] = useState<number | null>(null);
   const { data: currentCity, isLoading: currentCityLoading } = useFetch<City>(
@@ -66,6 +67,23 @@ function CitiesProvider({ children }: { readonly children: React.ReactNode }) {
     }
   }
 
+  async function deleteCity(city: City) {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${BASE_URL}/cities/${city.id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data) {
+        setCities((cities) => cities.filter((c) => c.id !== city.id));
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   const contextValue = useMemo(
     () => ({
       cities,
@@ -80,6 +98,7 @@ function CitiesProvider({ children }: { readonly children: React.ReactNode }) {
       cityToAdd,
       getCity,
       addCity,
+      deleteCity,
     }),
     [
       addCityError,

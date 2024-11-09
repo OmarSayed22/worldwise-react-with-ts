@@ -7,7 +7,11 @@ interface CityItemProps {
 }
 
 export default function CityItem({ city }: CityItemProps) {
-  const { currentCity } = useCities();
+  const { currentCity, deleteCity } = useCities();
+  function deleteCityHandler(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    deleteCity(city);
+  }
   return (
     <li>
       <Link
@@ -19,7 +23,9 @@ export default function CityItem({ city }: CityItemProps) {
         <span className={styles.emoji}>{city.emoji}</span>
         <h3>{city.cityName}</h3>
         <p>( {new Date(city.date).toDateString()} )</p>
-        <button className={styles.btn}>x</button>
+        <button className={styles.deleteBtn} onClick={deleteCityHandler}>
+          x
+        </button>
       </Link>
     </li>
   );

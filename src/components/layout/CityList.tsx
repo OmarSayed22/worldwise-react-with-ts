@@ -1,4 +1,5 @@
 import styles from "./CityList.module.css";
+import _ from "lodash";
 
 import CityItem from "../common/CityItem";
 
@@ -9,6 +10,7 @@ import useCities from "../../hooks/useCities";
 
 function CityList() {
   const { cities, isLoading } = useCities();
+
   return (
     <ul className={styles.cityList}>
       {isLoading && <Spinner />}

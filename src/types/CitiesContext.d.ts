@@ -9,10 +9,11 @@ type CitiesContextType = {
   isLoadingGeoCoding: boolean;
   geoCodingsError: string | null;
   isLoadingAddCity: boolean;
-  AddCityError: string | null;
+  addCityError: string | null;
   cityToAdd: City;
   getCity: (lat: number, lng: number) => void;
   addCity: (city: City) => void;
+  deleteCity: (city: City) => void;
 };
 
 export default CitiesContextType;
