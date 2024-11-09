@@ -1,26 +1,29 @@
 import { useState, useEffect } from "react";
 
-function useFetch<T>(initialValue: T) {
-  const [value, setValue] = useState<T>(initialValue);
+function useFetch<T>(initialValue: T, url: string) {
+  console.log(url);
+  const [data, setData] = useState<T>(initialValue);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchCities() {
+    async function fetchData() {
       try {
         setIsLoading(true);
-        const res = await fetch("http://localhost:8000/cities");
+        const res = await fetch(url);
         const data = await res.json();
         if (data) {
-          setValue(data);
+          setData(data);
         }
       } catch (e) {
-        alert("error fetching cities");
+        console.error(e);
+        setError(e as string);
       } finally {
         setIsLoading(false);
       }
     }
-    fetchCities();
-  }, []);
-  return { value, isLoading };
+    fetchData();
+  }, [url]);
+  return { data, error, setData, isLoading };
 }
 export default useFetch;

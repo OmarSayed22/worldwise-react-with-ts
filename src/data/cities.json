@@ -10,7 +10,7 @@
         "lat": 38.727881642324164,
         "lng": -9.140900099907554
       },
-      "id": 73930385
+      "id": "73930385"
     },
     {
       "cityName": "Madrid",
@@ -22,7 +22,7 @@
         "lat": 40.46635901755316,
         "lng": -3.7133789062500004
       },
-      "id": 17806751
+      "id": "17806751"
     },
     {
       "cityName": "Berlin",
@@ -34,7 +34,7 @@
         "lat": 52.53586782505711,
         "lng": 13.376933665713324
       },
-      "id": 98443197
+      "id": "98443197"
     },
     {
       "cityName": "Nijar",
@@ -46,7 +46,151 @@
         "lat": "36.967508314568164",
         "lng": "-2.13128394200588"
       },
-      "id": 98443198
+      "id": "98443198"
+    },
+    {
+      "id": "01603114",
+      "cityName": "Castello de la Plana",
+      "country": "Spain",
+      "emoji": "🇪🇸",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 40,
+        "lng": 0
+      },
+      "notes": "omar sayed"
+    },
+    {
+      "id": "11030999",
+      "cityName": "Pskov",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 58,
+        "lng": 28
+      },
+      "notes": ""
+    },
+    {
+      "id": "10030205",
+      "cityName": "Balvi",
+      "country": "Latvia",
+      "emoji": "🇱🇻",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 57,
+        "lng": 27
+      },
+      "notes": ""
+    },
+    {
+      "id": "08052427",
+      "cityName": "Priozersk",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 61,
+        "lng": 31
+      },
+      "notes": ""
+    },
+    {
+      "id": "82129773",
+      "cityName": "Priozersk",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 61,
+        "lng": 31
+      },
+      "notes": ""
+    },
+    {
+      "id": "77697990",
+      "cityName": "Olonets",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 61,
+        "lng": 32
+      },
+      "notes": ""
+    },
+    {
+      "id": "98789280",
+      "cityName": "Olonets",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 61,
+        "lng": 32
+      },
+      "notes": ""
+    },
+    {
+      "id": "33173903",
+      "cityName": "Olonets",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 61,
+        "lng": 32
+      },
+      "notes": ""
+    },
+    {
+      "id": "38826843",
+      "cityName": "Olonets",
+      "country": "Russian Federation (the)",
+      "emoji": "🇷🇺",
+      "date": "10/28/2024",
+      "position": {
+        "lat": 61,
+        "lng": 32
+      },
+      "notes": ""
+    },
+    {
+      "id": "23473059",
+      "cityName": "Cairo",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "11/9/2024",
+      "position": {
+        "lat": 30.05720849081894,
+        "lng": 31.467590332031254
+      },
+      "notes": "the city i want to visit"
+    },
+    {
+      "id": "59266641",
+      "cityName": "Giza",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "11/9/2024",
+      "position": {
+        "lat": 30.25209810124235,
+        "lng": 30.92787086963654
+      },
+      "notes": ""
+    },
+    {
+      "id": "21506375",
+      "cityName": "Giza",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "11/9/2024",
+      "position": {
+        "lat": 30.252061030228994,
+        "lng": 30.92736124992371
+      },
+      "notes": ""
     }
   ]
 }

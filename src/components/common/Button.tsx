@@ -1,15 +1,20 @@
-import { MouseEventHandler } from "react";
+import { ButtonHTMLAttributes, MouseEventHandler } from "react";
 import styles from "./Button.module.css";
 
 interface ButtonProps {
   children: string;
-  type: string;
+  btnType: string;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-function Button({ type, children, onClick }: ButtonProps) {
+function Button({ type, btnType, children, onClick }: ButtonProps) {
   return (
-    <button className={`${styles.btn} ${styles[type]}`} onClick={onClick}>
+    <button
+      type={type}
+      className={`${styles.btn} ${styles[btnType]}`}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

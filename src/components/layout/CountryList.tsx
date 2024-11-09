@@ -1,13 +1,12 @@
 import styles from "./CountryList.module.css";
-import { useOutletContext } from "react-router-dom";
-import SidebarContext from "../../types/SidebarContext";
 import Spinner from "../common/Spinner";
 import Message from "../common/Message";
 import CountryItem from "../common/CountryItem";
 import Country from "../../types/Country";
+import useCities from "../../hooks/useCities";
 
 function CountryList() {
-  const { cities, isLoading } = useOutletContext<SidebarContext>();
+  const { cities, isLoading } = useCities();
   const countries = cities.reduce((acc, city) => {
     const isCountryExist = acc.some((el) => el.country === city.country);
     if (!isCountryExist) {

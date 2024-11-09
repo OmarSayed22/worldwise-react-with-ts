@@ -7,7 +7,7 @@ import LoginPage from "../pages/LoginPage.tsx";
 import AppLayout from "../pages/AppLayout.tsx";
 import CityList from "../components/layout/CityList.tsx";
 import CountryList from "../components/layout/CountryList.tsx";
-import City from "../components/common/City.tsx";
+import CityComponent from "../components/common/City.tsx";
 import Form from "../components/common/Form.tsx";
 
 const AppRouter = createBrowserRouter([
@@ -41,7 +41,7 @@ const AppRouter = createBrowserRouter([
       },
       {
         path: "cities/:id",
-        element: <City />,
+        element: <CityComponent />,
       },
 
       {
