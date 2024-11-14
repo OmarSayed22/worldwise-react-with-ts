@@ -9,6 +9,7 @@ import CityList from "../components/layout/CityList.tsx";
 import CountryList from "../components/layout/CountryList.tsx";
 import CityComponent from "../components/common/City.tsx";
 import Form from "../components/common/Form.tsx";
+import ProtectedRoute from "../pages/ProtectedRoute.tsx";
 
 const AppRouter = createBrowserRouter([
   {
@@ -29,7 +30,11 @@ const AppRouter = createBrowserRouter([
   },
   {
     path: "/app",
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

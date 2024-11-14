@@ -29,10 +29,8 @@ function Map() {
       setMarkerPosition([lat, lng]);
     }
   }, [lat, lng]);
-  console.log([currantLat, currentLng]);
   useEffect(() => {
     if (currantLat && currentLng) {
-      console.log("current");
       setMarkerPosition([currantLat, currentLng]);
       navigate(`form?lat=${currantLat}&lng=${currentLng}`);
     }

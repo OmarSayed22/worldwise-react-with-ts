@@ -1,32 +1,40 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./City.module.css";
 import Button from "./Button";
 import Spinner from "./Spinner";
 import useCities from "../../hooks/useCities";
 import { useEffect } from "react";
+import Message from "./Message";
 
-const formatDate = (date: Date) =>
-  new Intl.DateTimeFormat("en", {
+const formatDate = (date: string | number) => {
+  console.log(date);
+  const parsedDate = typeof date === "string" ? parseInt(date) : date;
+  return new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "long",
     year: "numeric",
     weekday: "long",
-  }).format(new Date(date));
+  }).format(new Date(parsedDate));
+};
 
 function CityComponent() {
   const { id } = useParams();
+
   const navigate = useNavigate();
-  const { currentCity, currentCityLoading, setCurrentCityId } = useCities();
+  const { city, getCityById, isLoading, error } = useCities();
 
-  // useEffect(() => {
-  //   getCurrentCity(id);
-  // }, [id]);
   useEffect(() => {
-    setCurrentCityId(id);
-  }, [id, setCurrentCityId]);
+    if (id) {
+      getCityById(id);
+    }
+  }, [id]);
+  console.log(city);
 
-  const { cityName, emoji, date, notes } = currentCity;
-  if (currentCityLoading) return <Spinner />;
+  const { cityName, emoji, date, notes } = city;
+  if (isLoading) return <Spinner />;
+  if (error) {
+    return <Message message={error || ""} />;
+  }
   return (
     <div className={styles.city}>
       <div className={styles.row}>
@@ -38,7 +46,7 @@ function CityComponent() {
 
       <div className={styles.row}>
         <h6>You went to {cityName} on</h6>
-        <p>{formatDate(date || null)}</p>
+        {date && <p>{formatDate(date)}</p>}
       </div>
 
       {notes && (

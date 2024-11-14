@@ -1,0 +1,10 @@
+.error {
+  display: flex;
+}
+.error span {
+  margin-right: 0.5rem;
+}
+.error p {
+  color: red;
+  font-size: 1.2rem;
+}

@@ -1,53 +1,142 @@
-import { createContext, useMemo, useState } from "react";
-import useFetch from "../hooks/useFetch";
+import { createContext, useEffect, useMemo, useReducer } from "react";
 import { City } from "../types/City";
 import CitiesContextType from "../types/CitiesContext";
 import ApiCity from "../types/ApiCity";
 import { toCity } from "../utils/mappers";
+import Position from "../types/Position";
 
 const BASE_URL = "http://localhost:8000";
 
+enum Action {
+  GET_CITY_BY_POSITION = "GET_CITY_BY_POSITION",
+  GET_CITY_BY_ID = "GET_CITY_BY_ID",
+  GET_CITIES = "GET_CITIES",
+  ADD_CITY = "ADD_CITY",
+  DELETE_CITY = "DELETE_CITY",
+  LOADING = "LOADING",
+  REJECTED = "REJECTED",
+}
+type State = {
+  cities: City[];
+  city: City;
+  isLoading: boolean;
+  error: string | null;
+};
+
+type ActionTypes =
+  | { type: Action.GET_CITY_BY_POSITION; payload: City }
+  | { type: Action.GET_CITY_BY_ID; payload: City }
+  | { type: Action.GET_CITIES; payload: City[] }
+  | { type: Action.ADD_CITY; payload: City }
+  | { type: Action.DELETE_CITY; payload: string }
+  | { type: Action.LOADING; payload?: boolean }
+  | { type: Action.REJECTED; payload: string };
+
+function reducer(state: State, action: ActionTypes): State {
+  switch (action.type) {
+    case Action.LOADING:
+      return { ...state, isLoading: true };
+    case Action.GET_CITY_BY_POSITION:
+      return { ...state, city: action.payload, isLoading: false };
+    case Action.GET_CITY_BY_ID:
+      return { ...state, city: action.payload, isLoading: false };
+    case Action.GET_CITIES:
+      return { ...state, cities: action.payload, isLoading: false };
+    case Action.ADD_CITY:
+      return {
+        ...state,
+        isLoading: false,
+        cities: [...state.cities, action.payload],
+        city: action.payload,
+      };
+    case Action.DELETE_CITY:
+      return {
+        ...state,
+        isLoading: false,
+        cities: state.cities.filter((c) => c.id !== action.payload),
+        city: {} as City,
+      };
+    case Action.REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+    default:
+      throw new Error(`Unknown action type`);
+  }
+}
+
+const initialState: State = {
+  cities: [],
+  city: {} as City,
+  isLoading: false,
+  error: null,
+};
+
 const CitiesContext = createContext<CitiesContextType>({} as CitiesContextType);
 function CitiesProvider({ children }: { readonly children: React.ReactNode }) {
-  const [isLoadingGeoCoding, setIsLoadingGeoCoding] = useState(false);
-  const [geoCodingsError, setGeoCodingsError] = useState<string | null>(null);
-  const [cityToAdd, setCityToAdd] = useState<City>({} as City);
-  const [isLoadingAddCity, setIsLoadingAddCity] = useState(false);
-  const [addCityError, setAddCityError] = useState<string | null>(null);
-  const {
-    data: cities,
-    setData: setCities,
-    isLoading,
-    setIsLoading,
-  } = useFetch<City[]>([], `${BASE_URL}/cities`);
-  const [currentCityId, setCurrentCityId] = useState<number | null>(null);
-  const { data: currentCity, isLoading: currentCityLoading } = useFetch<City>(
-    {} as City,
-    `${BASE_URL}/cities/${currentCityId}`
+  const [{ cities, city, isLoading, error }, dispatch] = useReducer(
+    reducer,
+    initialState
   );
 
-  async function getCity(lat: number, lng: number) {
+  useEffect(() => {
+    async function fetchCities() {
+      try {
+        dispatch({ type: Action.LOADING });
+        const res = await fetch(`${BASE_URL}/cities`);
+        const data = (await res.json()) as City[];
+        if (data) {
+          dispatch({ type: Action.GET_CITIES, payload: data });
+        }
+      } catch (error) {
+        dispatch({ type: Action.REJECTED, payload: error as string });
+      }
+    }
+    fetchCities();
+  }, []);
+  async function getCityByPosition(position: Position) {
+    console.log(position);
     try {
-      setIsLoadingGeoCoding(true);
-      const response = await fetch(
-        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`
-      );
+      dispatch({ type: Action.LOADING });
+
+      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position[0]}&longitude=${position[1]}`;
+
+      const response = await fetch(url);
       const data = (await response.json()) as ApiCity;
+      console.log(data);
+      if (data) {
+        dispatch({ type: Action.GET_CITY_BY_POSITION, payload: toCity(data) });
+      }
+    } catch (error) {
+      dispatch({ type: Action.REJECTED, payload: error as string });
+    }
+  }
+  async function getCityById(cityId: string) {
+    if (cityId === city.id) {
+      return;
+    }
+    dispatch({ type: Action.LOADING });
+    try {
+      const url = `${BASE_URL}/cities/${cityId}`;
+      console.log(url);
+      const response = await fetch(url);
+
+      const data = await response.json();
+      console.log(data);
 
       if (data) {
-        setCityToAdd(toCity(data));
+        dispatch({ type: Action.GET_CITY_BY_ID, payload: data });
       }
-      setIsLoadingGeoCoding(false);
     } catch (error) {
-      setGeoCodingsError(error as string);
-    } finally {
-      setIsLoadingGeoCoding(false);
+      dispatch({ type: Action.REJECTED, payload: error as string });
     }
   }
 
   async function addCity(city: City) {
     try {
-      setIsLoadingAddCity(true);
+      dispatch({ type: Action.LOADING });
       const res = await fetch(`${BASE_URL}/cities`, {
         method: "POST",
         headers: {
@@ -55,62 +144,42 @@ function CitiesProvider({ children }: { readonly children: React.ReactNode }) {
         },
         body: JSON.stringify(city),
       });
-      const data = await res.json();
+      const data = (await res.json()) as City;
       if (data) {
-        setCities((cities) => [...cities, data]);
+        dispatch({ type: Action.ADD_CITY, payload: data });
       }
-      setIsLoadingAddCity(false);
     } catch (error) {
-      setAddCityError(error as string);
-    } finally {
-      setIsLoadingAddCity(false);
+      dispatch({ type: Action.REJECTED, payload: error as string });
     }
   }
 
-  async function deleteCity(city: City) {
+  async function deleteCity(cityId: string) {
+    console.log(cityId);
     try {
-      setIsLoading(true);
-      const res = await fetch(`${BASE_URL}/cities/${city.id}`, {
+      // dispatch({ type: Action.LOADING });
+      const res = await fetch(`${BASE_URL}/cities/${cityId}`, {
         method: "DELETE",
       });
       const data = await res.json();
       if (data) {
-        setCities((cities) => cities.filter((c) => c.id !== city.id));
+        dispatch({ type: Action.DELETE_CITY, payload: cityId });
       }
-      setIsLoading(false);
     } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+      dispatch({ type: Action.REJECTED, payload: error as string });
     }
   }
   const contextValue = useMemo(
     () => ({
       cities,
+      city,
       isLoading,
-      setCurrentCityId,
-      currentCity,
-      currentCityLoading,
-      isLoadingGeoCoding,
-      isLoadingAddCity,
-      geoCodingsError,
-      addCityError,
-      cityToAdd,
-      getCity,
+      error,
+      getCityByPosition,
+      getCityById,
       addCity,
       deleteCity,
     }),
-    [
-      addCityError,
-      cities,
-      cityToAdd,
-      currentCity,
-      currentCityLoading,
-      geoCodingsError,
-      isLoading,
-      isLoadingAddCity,
-      isLoadingGeoCoding,
-    ]
+    [cities, isLoading, city, error]
   );
 
   return (
@@ -119,5 +188,4 @@ function CitiesProvider({ children }: { readonly children: React.ReactNode }) {
     </CitiesContext.Provider>
   );
 }
-
 export { CitiesProvider, CitiesContext };

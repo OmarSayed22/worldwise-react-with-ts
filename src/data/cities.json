@@ -1,26 +1,26 @@
 {
   "cities": [
     {
-      "id": "84500364",
-      "cityName": "Olonets",
-      "country": "Russian Federation (the)",
-      "emoji": "🇷🇺",
-      "date": "11/9/2024",
+      "id": "97638360",
+      "cityName": "Giza",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "11/11/2024",
       "position": {
-        "lat": 61.33880948091587,
-        "lng": 32.68432617187501
+        "lat": 29.7627439,
+        "lng": 31.2948109
       },
       "notes": ""
     },
     {
-      "id": "51671769",
-      "cityName": "Savonlinna",
-      "country": "Finland",
-      "emoji": "🇫🇮",
-      "date": "11/9/2024",
+      "id": "08661197",
+      "cityName": "Markaz ash Shaykh Zuwayd",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "11/13/2024",
       "position": {
-        "lat": 61.642944780115585,
-        "lng": 28.872070312500004
+        "lat": 30.751277776257812,
+        "lng": 34.02416830670134
       },
       "notes": ""
     }

@@ -7,6 +7,7 @@ import Spinner from "../common/Spinner";
 import Message from "../common/Message";
 
 import useCities from "../../hooks/useCities";
+import { useEffect } from "react";
 
 function CityList() {
   const { cities, isLoading } = useCities();

@@ -14,45 +14,37 @@ function Form() {
   const [notes, setNotes] = useState("");
   const navigate = useNavigate();
   const [lat, lng] = useUrlPosition();
-  const {
-    isLoadingGeoCoding,
-    geoCodingsError,
-    getCity,
-    cityToAdd,
-    addCity,
-    AddCityError,
-    isLoadingAddCity,
-  } = useCities();
+  const { isLoading, error, getCityByPosition, city, addCity } = useCities();
 
   useEffect(
     function () {
       console.log("get city");
-      getCity(lat, lng);
-      setCityName(cityToAdd.cityName);
+      getCityByPosition([lat, lng]);
+      setCityName(city.cityName);
     },
-    [cityToAdd.cityName, lat, lng]
+    [city.cityName, lat, lng]
   );
 
   async function addCityHandler(e: React.FormEvent) {
     e.preventDefault();
     await addCity({
-      ...cityToAdd,
+      ...city,
       date: date.toLocaleDateString(),
       notes: notes,
     });
     navigate("/app/cities");
   }
-  if (isLoadingGeoCoding) {
+  if (isLoading) {
     return <Spinner />;
   }
-  if (geoCodingsError) {
-    console.log(geoCodingsError);
-    return <Message message={geoCodingsError} />;
+
+  if (error) {
+    return <Message message={error} />;
   }
 
   return (
     <form
-      className={`${styles.form} ${isLoadingAddCity ? styles.loading : ""}`}
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
       onSubmit={addCityHandler}
     >
       <div className={styles.row}>
@@ -62,7 +54,7 @@ function Form() {
           onChange={(e) => setCityName(e.target.value)}
           value={cityName}
         />
-        <span className={styles.flag}>{cityToAdd.emoji}</span>
+        <span className={styles.flag}>{city.emoji}</span>
       </div>
 
       <div className={styles.row}>
@@ -85,7 +77,7 @@ function Form() {
 
       <div className={styles.buttons}>
         <Button btnType="primary" type="submit">
-          {isLoadingAddCity ? "Loading..." : "Add"}
+          {isLoading ? "Loading..." : "Add"}
         </Button>
         <Button
           onClick={(e) => {

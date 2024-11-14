@@ -23,5 +23,5 @@ export default function useGeolocation(defaultPosition: Position) {
     );
   }
 
-  return { isLoading, position, error, getPosition };
+  return { isLoading, position, error, getPosition, setPosition };
 }

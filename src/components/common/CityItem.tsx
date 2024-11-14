@@ -7,10 +7,13 @@ interface CityItemProps {
 }
 
 export default function CityItem({ city }: CityItemProps) {
-  const { currentCity, deleteCity } = useCities();
+  const { city: currentCity, deleteCity } = useCities();
+
   function deleteCityHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    deleteCity(city);
+    if (city.id) {
+      deleteCity(city.id);
+    }
   }
   return (
     <li>

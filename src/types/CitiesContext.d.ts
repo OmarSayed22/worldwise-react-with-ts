@@ -2,18 +2,13 @@ import { City } from "./City";
 
 type CitiesContextType = {
   cities: City[];
+  city: City;
   isLoading: boolean;
-  setCurrentCityId: React.Dispatch<React.SetStateAction<number | null>>;
-  currentCity: City;
-  currentCityLoading: boolean;
-  isLoadingGeoCoding: boolean;
-  geoCodingsError: string | null;
-  isLoadingAddCity: boolean;
-  addCityError: string | null;
-  cityToAdd: City;
-  getCity: (lat: number, lng: number) => void;
-  addCity: (city: City) => void;
-  deleteCity: (city: City) => void;
+  error: string | null;
+  getCityById: (cityId: string) => Promise<void>;
+  getCityByPosition: (position: Position) => Promise<void>;
+  addCity: (city: City) => Promise<void>;
+  deleteCity: (cityId: string) => Promise<void>;
 };
 
 export default CitiesContextType;
